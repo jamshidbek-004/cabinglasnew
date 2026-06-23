@@ -300,6 +300,7 @@ src="https://www.facebook.com/tr?id=1394917204974660&ev=PageView&noscript=1"
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
+    <a href="tel:+998945616300" style="display:inline-block;color:#C8A85A;font-family:'DM Sans',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;text-decoration:none;margin-bottom:16px;">📞 +998 94 561 63 00</a>
     <div class="hero-badge">Toshkentdagi №1 Dush Kabinalari</div>
 
     <h1>
@@ -498,6 +499,12 @@ src="https://www.facebook.com/tr?id=1394917204974660&ev=PageView&noscript=1"
     <button class="slider-btn" id="prevBtn">&#8592;</button>
     <div class="slider-dots" id="dotsWrap"></div>
     <button class="slider-btn" id="nextBtn">&#8594;</button>
+  </div>
+  <div style="text-align:center;margin-top:40px;padding:0 20px;">
+    <a href="#" onclick="document.getElementById('cgPopup').style.display='block';return false;"
+      style="display:inline-block;background:linear-gradient(135deg,#C8A85A,#8B6914);color:#1A1409;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:18px 48px;text-decoration:none;">
+      🛁 Bepul O'lchashga Ariza Berish →
+    </a>
   </div>
 </section>
 
@@ -1032,6 +1039,12 @@ function cgOpen() {
 function cgClose() {
   document.getElementById('cgPopup').style.display = 'none';
   document.body.style.overflow = '';
+  if (typeof cgExitShown !== 'undefined' && !cgExitShown) {
+    cgExitShown = true;
+    setTimeout(function() {
+      document.getElementById('cgExitOverlay').style.display = 'block';
+    }, 400);
+  }
 }
 document.getElementById('cgPopup').addEventListener('click', function(e){
   if(e.target === this) cgClose();
@@ -1146,14 +1159,17 @@ async function cgSubmit() {
   });
 </script>
 
-<!-- ══ STICKY MOBIL PANEL ══ -->
-<div id="cgStickyBar">
-  <a href="tel:+998945616300" class="cgStickyBtn cgStickyBtn-call">📞 Qo'ng'iroq</a>
-  <button onclick="document.getElementById('cgPopup').style.display='block'" class="cgStickyBtn cgStickyBtn-form">✍️ Ariza berish</button>
-</div>
+<!-- ══ STICKY QONG'IROQ TUGMASI ══ -->
+<a href="tel:+998945616300" id="cgStickyBar"
+  style="position:fixed;bottom:24px;right:20px;z-index:8000;
+  background:linear-gradient(135deg,#C8A85A,#8B6914);color:#1A1409;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;
+  display:flex;align-items:center;gap:8px;padding:14px 22px;
+  box-shadow:0 4px 20px rgba(200,168,90,0.4);">
+  📞 Qo'ng'iroq
+</a>
 
-<!-- ══ FLOATING TELEGRAM ══ -->
-<div id="cgFloatTg" onclick="document.getElementById('cgPopup').style.display='block'" title="Ariza berish">✈️</div>
 
 <!-- ══ EXIT INTENT POPUP ══ -->
 <div id="cgExitOverlay" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(8,5,2,0.88);backdrop-filter:blur(6px);">
@@ -1172,43 +1188,25 @@ async function cgSubmit() {
 </div>
 
 <script>
-  // ── Exit intent (desktop: mouse yuqoriga chiqsa, mobil: back tugmasi) ──
+  // ── Exit intent: 1 daqiqadan keyin chiqadi ──
   var cgExitShown = false;
-  document.addEventListener('mouseleave', function(e) {
-    if (e.clientY < 10 && !cgExitShown) {
+  setTimeout(function() {
+    if (!cgExitShown) {
       cgExitShown = true;
       document.getElementById('cgExitOverlay').style.display = 'block';
     }
-  });
-  // Mobil uchun: sahifa yashirilganda (minimize yoki tab almashganda)
-  document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'hidden' && !cgExitShown) {
+  }, 60000);
+
+  // ── Popup yopilganda (x tugmasi) exit overlay chiqadi ──
+  function cgClosePopupAndShowExit() {
+    document.getElementById('cgPopup').style.display = 'none';
+    if (!cgExitShown) {
       cgExitShown = true;
-      document.addEventListener('visibilitychange', function() {
-        if (document.visibilityState === 'visible') {
-          document.getElementById('cgExitOverlay').style.display = 'block';
-        }
-      }, {once: true});
+      setTimeout(function() {
+        document.getElementById('cgExitOverlay').style.display = 'block';
+      }, 400);
     }
-  });
-
-  // ── Sticky bar — popup ochilganda yashir ──
-  var cgOrigOpen = window.cgOpenPopup;
-  document.getElementById('cgPopup').addEventListener('cgOpen', function() {
-    document.getElementById('cgStickyBar').style.display = 'none';
-  });
-
-  // ── Galereya CTA tugmasi qo'shish ──
-  document.querySelectorAll('#sliderTrack .slide').forEach(function(slide, i) {
-    var btn = document.createElement('button');
-    btn.className = 'slide-cta';
-    btn.textContent = 'Narxini bilish →';
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      document.getElementById('cgPopup').style.display = 'block';
-    });
-    slide.appendChild(btn);
-  });
+  }
 </script>
 
 </body>
