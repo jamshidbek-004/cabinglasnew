@@ -951,7 +951,28 @@ function faqToggle(btn) {
         <div style="text-align:center;margin-bottom:28px;">
           <p style="font-family:'Playfair Display',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#C8A85A;margin-bottom:12px;">CabinGlass</p>
           <h3 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#F5EDD3;line-height:1.35;margin-bottom:8px;">Buyurtma uchun raqamingizni qoldiring!</h3>
-          <p style="font-size:13px;color:rgba(245,237,211,0.45);line-height:1.6;">Mutaxassisimiz 1 soat ichida siz bilan boglanadi</p>
+          <p style="font-size:12px;color:#C8A85A;letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:6px;">&#128205; Faqat Toshkent bo'yicha ish olib boramiz!</p>
+        </div>
+        <div style="margin-bottom:14px;">
+          <p style="font-size:13px;color:rgba(245,237,211,0.7);margin-bottom:10px;">Toshkentda yashaysizmi?</p>
+          <div style="display:flex;gap:12px;">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 20px;border:1px solid rgba(200,168,90,0.3);flex:1;justify-content:center;transition:border-color 0.2s;"
+              onmouseover="this.style.borderColor='rgba(200,168,90,0.7)'"
+              onmouseout="if(!document.getElementById('cgYes').checked)this.style.borderColor='rgba(200,168,90,0.3)'">
+              <input type="radio" id="cgYes" name="cgCity" value="ha"
+                style="accent-color:#C8A85A;width:16px;height:16px;cursor:pointer;"
+                onchange="document.querySelectorAll('.cgCityLabel').forEach(l=>l.style.borderColor='rgba(200,168,90,0.3)');this.parentElement.style.borderColor='rgba(200,168,90,0.7)'">
+              <span style="font-size:14px;color:#F5EDD3;font-weight:500;" class="cgCityLabel">Ha</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 20px;border:1px solid rgba(200,168,90,0.3);flex:1;justify-content:center;transition:border-color 0.2s;"
+              onmouseover="this.style.borderColor='rgba(200,168,90,0.7)'"
+              onmouseout="if(!document.getElementById('cgNo').checked)this.style.borderColor='rgba(200,168,90,0.3)'">
+              <input type="radio" id="cgNo" name="cgCity" value="yoq"
+                style="accent-color:#C8A85A;width:16px;height:16px;cursor:pointer;"
+                onchange="document.querySelectorAll('.cgCityLabel').forEach(l=>l.style.borderColor='rgba(200,168,90,0.3)');this.parentElement.style.borderColor='rgba(200,168,90,0.7)'">
+              <span style="font-size:14px;color:#F5EDD3;font-weight:500;" class="cgCityLabel">Yo'q</span>
+            </label>
+          </div>
         </div>
         <div style="position:relative;margin-bottom:14px;">
           <input id="cgPhone" type="tel" placeholder="__ ___ __ __" maxlength="13"
@@ -961,9 +982,6 @@ function faqToggle(btn) {
             oninput="cgFormat(this)"
             onkeydown="cgKey(event, this)">
           <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:600;color:rgba(245,237,211,0.7);pointer-events:none;letter-spacing:1px;font-family:'DM Sans',sans-serif;">+998</span>
-        </div>
-        <div style="margin-bottom:18px;padding:10px 14px;background:rgba(200,168,90,0.05);border-left:2px solid rgba(200,168,90,0.35);">
-          <p style="font-size:12px;color:rgba(245,237,211,0.4);line-height:1.6;">&#10003; Bepul olchash &nbsp; &#10003; Hech qanday ortiqcha tolov &nbsp; &#10003; 1 soatda boglanamiz</p>
         </div>
         <button onclick="cgSubmit()" style="width:100%;background:linear-gradient(135deg,#C8A85A,#8B6914);color:#1A1409;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:17px;border:none;cursor:pointer;">
           BEPUL O'LCHASHGA ARIZA BERISH
@@ -1021,10 +1039,17 @@ async function cgSubmit() {
     errEl.style.display = 'block';
     return;
   }
+  var cityRadio = document.querySelector('input[name="cgCity"]:checked');
+  if(!cityRadio) {
+    errEl.textContent = 'Iltimos, Toshkentda yashash-yashashligingizni belgilang.';
+    errEl.style.display = 'block';
+    return;
+  }
   errEl.style.display = 'none';
+  var cityVal = cityRadio.value === 'ha' ? '✅ Ha — Toshkentda yashaydi' : '❌ Yo\'q — Toshkentda yashamaydi';
   var now = new Date();
   var t = now.toLocaleString('ru-RU', {timeZone:'Asia/Tashkent'});
-  var msg = '\uD83D\uDD14 Yangi ariza \u2014 CabinGlass\n\n\uD83D\uDCDE Raqam: +998' + digits + '\n\uD83D\uDD50 Vaqt: ' + t + '\n\nTez orada bog\u02bclaning!';
+  var msg = '🔔 Yangi ariza — CabinGlass\n\n📞 Raqam: +998' + digits + '\n🏙 Toshkentda yashaydi: ' + cityVal + '\n🕐 Vaqt: ' + t + '\n\nTez orada bog\'laning!';
   try {
     var res = await fetch('https://api.telegram.org/bot7423553123:AAHl8LEkPIdeVz5vDDBV0eSR00JEK3xzbiQ/sendMessage', {
       method: 'POST',
