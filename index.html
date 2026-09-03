@@ -301,8 +301,8 @@ footer{position:relative;z-index:1;background:var(--ink);margin-top:0;}
   /* text first, image after — so button is visible early */
   .hero-left{order:1;}
   .hero-right{order:2;}
-  .hero-img-wrap{aspect-ratio:4/5;max-height:420px;border-width:4px;border-radius:18px;}
-  .hero-img-wrap img{object-fit:cover;object-position:center;}
+  .hero-img-wrap{aspect-ratio:4/5;max-height:520px;border-width:4px;border-radius:18px;}
+  .hero-img-wrap img{object-fit:contain;}
   .hero-h1{font-size:clamp(34px,8vw,48px);margin-bottom:20px;}
   .hero-sub{font-size:16px;max-width:100%;margin-bottom:28px;}
   .hero-btns{width:100%;flex-direction:column;margin-bottom:28px;}
@@ -344,8 +344,8 @@ footer{position:relative;z-index:1;background:var(--ink);margin-top:0;}
   .hero-section{padding:76px 18px 36px;}
   .hero-h1{font-size:clamp(30px,9vw,42px);margin-bottom:18px;}
   .hero-sub{font-size:15px;margin-bottom:24px;}
-  .hero-img-wrap{max-height:360px;border-width:3px;aspect-ratio:4/5;}
-  .hero-img-wrap img{object-fit:cover;object-position:center;}
+  .hero-img-wrap{max-height:480px;border-width:3px;aspect-ratio:4/5;}
+  .hero-img-wrap img{object-fit:contain;}
   .hero-stat+.hero-stat{padding-left:16px;}
   .stat-n{font-size:20px;}
   .stat-l{font-size:10.5px;}
@@ -750,6 +750,9 @@ footer{position:relative;z-index:1;background:var(--ink);margin-top:0;}
         <div class="success-icon">✅</div>
         <div class="success-title">Arizangiz qabul qilindi!</div>
         <p class="success-sub">Mutaxassisimiz <strong>1 soat ichida</strong> siz bilan bog'lanadi.<br>Rahmat, CabinGlass!</p>
+        <a href="https://t.me/+yEhcaDaP281hZDli" target="_blank" class="popup-submit" style="display:inline-block;text-decoration:none;margin-top:20px;">
+          Telegram kanalimizga o'tish →
+        </a>
       </div>
     </div>
   </div>
@@ -852,7 +855,7 @@ async function cgSend() {
     if(data.ok){
       document.getElementById('cgForm').style.display='none';
       document.getElementById('cgSuccess').style.display='block';
-      setTimeout(()=>window.open('https://t.me/+yEhcaDaP281hZDli','_blank'),1500);
+      setTimeout(()=>{window.location.href='https://t.me/+yEhcaDaP281hZDli';},1200);
     } else throw new Error();
   } catch(e) {
     errEl.textContent='Xatolik yuz berdi. Qayta urining.';
